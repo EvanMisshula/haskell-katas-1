@@ -1,8 +1,18 @@
+{-# LANGUAGE UnicodeSyntax #-}
+
 module Ex43_FaNewTypeSpec
   ( spec
   ) where
 
 import Test.Hspec
+import Test.QuickCheck
+import Control.Applicative
+import Prelude.Unicode
+import Data.Monoid.Unicode
+import Data.Map.Unicode
+import Data.Sequence.Unicode
+import Control.Applicative.Unicode
+
 
 main :: IO ()
 main = hspec spec
@@ -20,28 +30,28 @@ main = hspec spec
     We can newtype the tuple in a way that the second type
     parameter represents the type of the first component of the tuple.
 -}
-newtype CharList a = CharList
-  { getCharList :: String
-  } deriving (Show, Eq)
 
-newtype Pair b a = Pair
-  { getPair :: (a, b)
-  }
+newtype CharList = CharList { getCharList ∷ [Char] } deriving (Eq, Show)
+
+newtype Pair b a = Pair { getPair ∷ (a,b)}
 
 instance Functor (Pair c) where
-  fmap f (Pair (x, y)) = Pair (f x, y)
+     fmap f (Pair (a, b)) = Pair (f a, b)
 
 spec :: Spec
-spec =
-  describe "newtype" $ do
-    it "can print values" $ do
-      let charList = CharList "this will be shown!"
-      show charList `shouldBe`
-        "CharList {getCharList = \"this will be shown!\"}"
-    it "can equate values" $ do
-      CharList "benny" == CharList "benny" `shouldBe` True
-      CharList "benny" == CharList "oisters" `shouldBe` False
-    it "works with the newtype Pair" $ do
-      getPair (fmap (* 100) (Pair (2, 3))) `shouldBe` (200, 3)
-      getPair (fmap reverse (Pair ("london calling", 3))) `shouldBe`
-        ("gnillac nodnol", 3)
+spec = do
+    describe "newtype" $ do
+        it "can print values" $ do
+             let charList = CharList "this will be shown!"
+             show charList
+                 `shouldBe` "CharList {getCharList = \"this will be shown!\"}"
+        it "can equate values" $ do
+             CharList "benny" == CharList "benny"
+                 `shouldBe` True
+             CharList "benny" == CharList "oisters"
+                 `shouldBe` False
+        it "works with the newtype Pair" $ do
+             (getPair $ fmap (*100) (Pair (2,3)))
+                 `shouldBe` (200, 3)
+             (getPair $ fmap reverse (Pair ("london calling", 3)))
+                 `shouldBe` ("gnillac nodnol", 3)

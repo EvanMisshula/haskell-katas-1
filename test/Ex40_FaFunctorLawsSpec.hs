@@ -1,8 +1,15 @@
+{-# LANGUAGE UnicodeSyntax #-}
 module Ex40_FaFunctorLawsSpec
   ( spec
   ) where
 
+
 import Test.Hspec
+import Test.QuickCheck
+import Prelude.Unicode
+import Data.Monoid.Unicode
+import Data.Map.Unicode
+import Data.Sequence.Unicode
 
 main :: IO ()
 main = hspec spec
@@ -19,13 +26,14 @@ main = hspec spec
     the functor and then mapping the other one.
         fmap (f . g) = fmap f . fmap g
 -}
+
 spec :: Spec
-spec =
-  describe "fmap laws" $ do
-    it "works with the first law" $ do
-      fmap id (Just 3) `shouldBe` Just 3
-      id (Just 3) `shouldBe` Just 3
-      fmap id [1 .. 5] `shouldBe` [1, 2, 3, 4, 5]
-      id [1 .. 5] `shouldBe` [1, 2, 3, 4, 5]
-      fmap id ([] :: [Int]) `shouldBe` []
-      fmap id (Nothing :: Maybe Bool) `shouldBe` Nothing
+spec = do
+    describe "fmap laws" $ do
+        it "works with the first law" $ do
+             fmap id(Just 3) `shouldBe` Just 3
+             id (Just 3) `shouldBe` Just 3
+             fmap id [1..5] `shouldBe` [1,2,3,4,5]
+             id [1..5]  `shouldBe` [1,2,3,4,5]
+             fmap id ([] :: [Int]) `shouldBe` []
+             fmap id (Nothing :: Maybe Bool) `shouldBe` Nothing

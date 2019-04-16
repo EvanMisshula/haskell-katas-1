@@ -29,6 +29,7 @@ tree =
     (Node 10 (Node 5 Leaf Leaf) (Node 15 Leaf Leaf))
     (Node 30 (Node 22 Leaf Leaf) (Node 35 Leaf Leaf))
 
+invalidTree :: Tree Int
 invalidTree =
   Node
     20
